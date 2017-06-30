@@ -1,5 +1,5 @@
 var MaterializeCollectionActions = (function () {
-    var lists = {};
+    var collections = {};
 
     function getActions(actionParent) {
         return $(actionParent).find('.mca-action');
@@ -17,16 +17,16 @@ var MaterializeCollectionActions = (function () {
         }
     }
 
-    function addActionToElement(listElement, list, iconName, onClick) {
+    function addActionToElement(collectionItem, collection, iconName, onClick) {
         return $('<i class="mca-action material-icons right"></i>')
-            .appendTo(listElement)
+            .appendTo(collectionItem)
             .text(iconName)
             .on('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
                 if (!$(this).hasClass('disabled')) {
-                    onClick(listElement, list);
+                    onClick(collectionItem, collection);
                 }
             });
     }
@@ -36,18 +36,18 @@ var MaterializeCollectionActions = (function () {
     return {
         textAttribute: textAttribute,
 
-        configureList: function (list, actions) {
-            $(list).each(function () {
+        configureActions: function (collection, actions) {
+            $(collection).each(function () {
                 var self = this;
 
-                function process(listElement) {
-                    var jElement = $(listElement);
+                function process(collectionItem) {
+                    var jElement = $(collectionItem);
 
                     jElement.attr(textAttribute, jElement.text());
                     jElement.text("");
 
                     actions.forEach(function (action) {
-                        addActionToElement(listElement, self, action.name, action.callback);
+                        addActionToElement(collectionItem, self, action.name, action.callback);
                     });
                 }
 
@@ -65,24 +65,24 @@ var MaterializeCollectionActions = (function () {
 
                 observer.observe(this, {childList: true});
 
-                $(this).children().each(function (i, initialElement) {
-                    process(initialElement);
+                $(this).children().each(function (i, initialItem) {
+                    process(initialItem);
                 });
 
-                lists[this] = {
+                collections[this] = {
                     observer: observer,
                     actions: actions
                 };
             });
         },
 
-        releaseList: function (list) {
-            var jList = $(list);
+        removeActions: function (collection) {
+            var jCollection = $(collection);
 
-            jList.find('.mca-action').remove();
-            jList.each(function () {
-                lists[this].observer.disconnect();
-                delete lists[this];
+            jCollection.find('.mca-action').remove();
+            jCollection.each(function () {
+                collections[this].observer.disconnect();
+                delete collections[this];
             });
         }
     };
