@@ -1,0 +1,1 @@
+.collection:not(.mca-always-visible) .collection-item:not(:hover) .mca-action{display:none}.mca-action:hover{color:#000}.mca-action.disabled{color:grey;cursor:default}[data-mca-text]::before{content:attr(data-mca-text)}

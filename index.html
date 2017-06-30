@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Materialize Collection Actions</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <link rel="stylesheet" href="materialize-collection-actions-1.0.0.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="materialize-collection-actions-1.0.0.min.js"></script>
+
+    <script>
+        hljs.initHighlightingOnLoad();
+
+        $(document).ready(function () {
+            MaterializeCollectionActions.configureActions($('#example-1'), [
+                {
+                    name: 'delete',
+                    callback: function (collectionItem, collection) {
+                        $(collectionItem).remove();
+                    }
+                }
+            ]);
+
+            var colors = ['lightgrey', 'lightblue', 'lightgreen'];
+            MaterializeCollectionActions.configureActions($('#example-2'), [
+                {
+                    name: 'delete',
+                    callback: function (collectionItem, collection) {
+                        $(collectionItem).remove();
+                    }
+                },
+                {
+                    name: 'brush',
+                    callback: function (collectionItem, collection) {
+                        $(collectionItem).css('background-color', colors[Math.floor(Math.random() * colors.length)]);
+                    }
+                },
+                {
+                    name: 'refresh',
+                    callback: function (collectionItem, collection) {
+                        $(collectionItem).css('background-color', 'inherit');
+                    }
+                }
+            ]);
+
+            MaterializeCollectionActions.configureActions($('#example-3'), [
+                {
+                    name: 'delete',
+                    callback: function (collectionItem, collection) {
+                        $(collectionItem).remove();
+                    }
+                },
+                {
+                    name: 'brush',
+                    callback: function (collectionItem, collection) {
+                        $(collectionItem).css('background-color', colors[Math.floor(Math.random() * colors.length)]);
+                    }
+                },
+                {
+                    name: 'refresh',
+                    callback: function (collectionItem, collection) {
+                        $(collectionItem).css('background-color', 'inherit');
+                    }
+                }
+            ]);
+
+            var header = $('header');
+
+            $('.toc-wrapper').pushpin({
+                top: header.offset().top + header.height()
+            });
+
+            $('.scrollspy').scrollSpy();
+        });
+    </script>
+
+    <style>
+        body {
+            background-color: #fafafa;
+        }
+
+        li a {
+            border-left-color: #ee6e73 !important;
+        }
+
+        .accent-background {
+            background-color: #ee6e73;
+        }
+
+        .underlined {
+            text-decoration: underline;
+        }
+
+        .btn {
+            margin: 10px;
+        }
+
+        .important {
+            padding: 10px;
+            background-color: #ef5350;
+            border-radius: 5px;
+        }
+
+        .info {
+            padding: 10px;
+            background-color: #ffeb3b;
+            border-radius: 5px;
+        }
+
+        #gh-mark {
+            max-width: 100%;
+            max-height: 100%;
+
+            border-radius: 50%;
+        }
+
+        #gh-mark:hover {
+            filter: brightness(400%);
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <div class="row z-depth-3 accent-background">
+        <div class="col s12 m8 offset-m2">
+            <div class="left">
+                <h1 class="white-text">Materialize Collection Actions</h1>
+                <p class="white-text">Give your <a class="underlined white-text"
+                                                   href="http://materializecss.com/collections.html">Materialize
+                    collections</a> action buttons</p>
+            </div>
+            <div class="col s12 hide-on-large-only center">
+                <a href="https://github.com/Fylipp/materialize-collections-actions" class="btn">View on GitHub</a>
+            </div>
+            <h1 class="right hide-on-med-and-down">
+                <a href="https://github.com/Fylipp/materialize-collections-actions"><img src="gh-mark.png" id="gh-mark"></a>
+            </h1>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="row">
+        <div class="col s12 m8 offset-m2">
+            <div id="section-installation" class="section scrollspy">
+                <h1>Installation</h1>
+                <p>
+                    <a href="https://github.com/Fylipp/materialize-collections-actions/releases">Download the latest
+                        build</a> and link
+                    the minified files in your HTML file's head section. You will also need
+                    <a href="http://materializecss.com/getting-started.html">MaterializeCSS</a>,
+                    <a href="http://google.github.io/material-design-icons/">Google's Material Icon Font</a> and
+                    <a href="http://jquery.com/download/">jQuery</a>.
+                </p>
+
+                <pre><code class="html">&lt;!-- Link to MaterializeCSS, Material Icon Font and jQuery --&gt;
+
+&lt;link rel=&quot;stylesheet&quot; href=&quot;materialize-collection-actions-VERSION.min.css&quot;&gt;
+&lt;script src=&quot;materialize-collection-actions-VERSION.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+            </div>
+
+            <div id="section-usage" class="section scrollspy">
+                <h1>Usage</h1>
+
+                <p>
+                    Each collection that should receive actions has to be configured. This is done with
+                    <code>MaterializeCollectionActions.configureActions</code>. The examples below show how to use
+                    this function. New collection items do <b>not</b> need to be registered separately.
+                </p>
+
+                <p>
+                    To remove all actions from a collection simply call
+                    <code>MaterializeCollectionActions.removeActions</code>
+                    with the collection to remove the actions from as the first argument. This can, again, be a jQuery
+                    or DOM element.
+                </p>
+
+                <p class="info">
+                    <b>INFO: </b>
+                    The action names directly correspond with the material icon used.
+                </p>
+
+                <p class="important">
+                    <b>IMPORTANT:</b>
+                    The content of the collection items can only be text. After a collection has been
+                    configured the text is automatically moved to each item's <code>data-mca-text</code> attribute.
+                    If the text of an item needs to be retrieved or modified you must use this attribute. Using the
+                    content of the item element will result in unwanted behaviour.
+                </p>
+
+                <div class="row">
+                    <h4>Single Action</h4>
+                    <p>
+                        By default the action is only visible when the user hovers above the collection item. In this
+                        example pressing the action icon will remove the appropriate item from the collection.
+                    </p>
+                    <div id="example-1" class="collection">
+                        <a href="#!" class="collection-item">Item 1</a>
+                        <a href="#!" class="collection-item">Item 2</a>
+                        <a href="#!" class="collection-item">Item 3</a>
+                        <a href="#!" class="collection-item">Item 4</a>
+                    </div>
+
+                    <pre><code class="html">&lt;div id=&quot;collection-id&quot; class=&quot;collection&quot;&gt;
+    &lt;a href=&quot;#!&quot; class=&quot;collection-item&quot;&gt;Item 1&lt;/a&gt;
+    &lt;a href=&quot;#!&quot; class=&quot;collection-item&quot;&gt;Item 2&lt;/a&gt;
+    &lt;a href=&quot;#!&quot; class=&quot;collection-item&quot;&gt;Item 3&lt;/a&gt;
+    &lt;a href=&quot;#!&quot; class=&quot;collection-item&quot;&gt;Item 4&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+
+                    <pre><code class="javascript">$(document).ready(function() {
+   MaterializeCollectionActions.configureActions($('#collection-id'), [
+        {
+            name: 'delete',
+            callback: function (collectionItem, collection) {
+                $(collectionItem).remove();
+            }
+        }
+    ]);
+});</code></pre>
+                </div>
+
+                <div class="row">
+                    <h4>Multiple Actions</h4>
+                    <p>
+                        Here you can see multiple actions being used. The brush will change the item background to a
+                        random color out of the <code>colors</code> array and the refresh icon will reset the
+                        background color The bin will, again, remove the item. Note that the the icons in the array
+                        are displayed from right to left.
+                    </p>
+                    <div id="example-2" class="collection">
+                        <a href="#!" class="collection-item">Item 1</a>
+                        <a href="#!" class="collection-item">Item 2</a>
+                        <a href="#!" class="collection-item">Item 3</a>
+                        <a href="#!" class="collection-item">Item 4</a>
+                    </div>
+
+                    <pre><code class="html">&lt;div id=&quot;collection-id&quot; class=&quot;collection&quot;&gt;
+    &lt;a href=&quot;#!&quot; class=&quot;collection-item&quot;&gt;Item 1&lt;/a&gt;
+    &lt;a href=&quot;#!&quot; class=&quot;collection-item&quot;&gt;Item 2&lt;/a&gt;
+    &lt;a href=&quot;#!&quot; class=&quot;collection-item&quot;&gt;Item 3&lt;/a&gt;
+    &lt;a href=&quot;#!&quot; class=&quot;collection-item&quot;&gt;Item 4&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+
+                    <pre><code class="javascript">var colors = ['lightgrey', 'lightblue', 'lightgreen'];
+MaterializeCollectionActions.configureActions($('#collection-id'), [
+    {
+        name: 'delete',
+        callback: function (collectionItem, collection) {
+            $(collectionItem).remove();
+        }
+    },
+    {
+        name: 'brush',
+        callback: function (collectionItem, collection) {
+            $(collectionItem).css('background-color', colors[Math.floor(Math.random() * colors.length)]);
+        }
+    },
+    {
+        name: 'refresh',
+        callback: function (collectionItem, collection) {
+            $(collectionItem).css('background-color', 'inherit');
+        }
+    }
+]);</code></pre>
+                </div>
+
+                <div class="row">
+                    <h4>Permanently Visible Icons</h4>
+                    <p>
+                        This example is identical to the one above apart from the <code>mca-always-visible</code> class
+                        on the collection.
+                    </p>
+                    <div id="example-3" class="collection mca-always-visible">
+                        <a href="#!" class="collection-item">Item 1</a>
+                        <a href="#!" class="collection-item">Item 2</a>
+                        <a href="#!" class="collection-item">Item 3</a>
+                        <a href="#!" class="collection-item">Item 4</a>
+                    </div>
+
+                    <pre><code class="html">&lt;div id=&quot;collection-id&quot; class=&quot;collection mca-always-visible&quot;&gt;
+    &lt;a href=&quot;#!&quot; class=&quot;collection-item&quot;&gt;Item 1&lt;/a&gt;
+    &lt;a href=&quot;#!&quot; class=&quot;collection-item&quot;&gt;Item 2&lt;/a&gt;
+    &lt;a href=&quot;#!&quot; class=&quot;collection-item&quot;&gt;Item 3&lt;/a&gt;
+    &lt;a href=&quot;#!&quot; class=&quot;collection-item&quot;&gt;Item 4&lt;/a&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="col hide-on-small-only m2">
+            <div class="toc-wrapper">
+                <ul class="section table-of-contents">
+                    <li><a href="#section-installation">Installation</a></li>
+                    <li><a href="#section-usage">Usage</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="page-footer accent-background">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">Materialize Collection Actions</h5>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            © 2017 Philipp Ploder
+            <a class="grey-text text-lighten-4 right" href="https://github.com/Fylipp/materialize-collections-actions">GitHub</a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
